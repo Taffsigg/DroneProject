@@ -40,6 +40,7 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Drone Alpha v0.1");
         //test
+        //baws
 	}
 
 }
