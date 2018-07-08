@@ -39,8 +39,8 @@ public class Main {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Drone Alpha v0.1");
-        //test
         //baws
+	
 	}
 
 }
