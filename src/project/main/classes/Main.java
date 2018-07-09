@@ -22,6 +22,7 @@ public class Main {
 	private JPanel panel;
 	static SerialPort chosenPort;
 	private boolean sending;
+	Thread thread2 = null;
 
 	/**
 	 * Launch the application.
@@ -136,16 +137,18 @@ public class Main {
 		} else {
 			sending = false;
 			thread.interrupt();
+			System.out.println("send thread is alive:" + thread.isAlive());
 		}
 	}
 
 	public void reciveInputfromSerial(boolean start) {
-		Thread thread2 = new Thread() {
+		thread2 = new Thread() {
 			@Override
 			public void run() {
 				Scanner scanner = new Scanner(chosenPort.getInputStream());
 				try {
 					System.out.println(chosenPort.getInputStream().read());
+					System.out.println("recive thread is alive:" + thread2.isAlive());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
