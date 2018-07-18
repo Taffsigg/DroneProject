@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.fazecast.jSerialComm.SerialPort;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 public class Main {
 	String s;
@@ -23,6 +25,8 @@ public class Main {
 	static SerialPort chosenPort;
 	private boolean sending;
 	Thread thread2 = null;
+	String data;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -101,6 +105,23 @@ public class Main {
 		});
 		btnConnect.setBounds(10, 42, 89, 23);
 		panel.add(btnConnect);
+		
+		btnNewButton = new JButton("LED ON");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnNewButton.getText().equals("LED ON")) {
+					data = "on";
+					btnNewButton.setText("LED OFF");
+				}else{
+					data = "off";
+					btnNewButton.setText("LED ON");
+				}
+			}
+		});
+		btnNewButton.setBounds(10, 80, 297, 23);
+		panel.add(btnNewButton);
+		
+		
 
 	}
 
@@ -117,18 +138,21 @@ public class Main {
 				// enter an infinite loop that sends text to the arduino
 				PrintWriter output = new PrintWriter(chosenPort.getOutputStream());
 
-				String data = null;
+				data = null;
 
 				sending = true;
 
 				while (sending) {
-					output.print(data);
+					System.out.println("data is: " + data);
+					if(data != null){
+					output.print(data.toString());
 					output.flush();
 					try {
 						Thread.sleep(100);
 					} catch (Exception e) {
 					}
 					System.out.println("Successfully Sending!");
+					}
 				}
 			}
 		};
@@ -156,7 +180,7 @@ public class Main {
 					try {
 						String line = scanner.nextLine();
 						int number = Integer.parseInt(line);
-						System.out.println(number);
+						System.out.println("number is: " + number);
 						System.out.println("Successfully reciving!");
 					} catch (Exception e) {
 					}
