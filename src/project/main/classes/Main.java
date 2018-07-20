@@ -17,6 +17,7 @@ import org.lwjgl.input.Controller;
 import org.lwjgl.input.Controllers;
 
 import com.fazecast.jSerialComm.SerialPort;
+import javax.swing.JTextField;
 
 public class Main {
 	String s;
@@ -29,6 +30,7 @@ public class Main {
 	String data;
 	private JButton btnNewButton;
 	static Controller controller;
+	private JTextField textField;
 	
 
 	/**
@@ -80,14 +82,14 @@ public class Main {
 		
 		
 		
-//		for(int i=0; i<Controllers.getControllerCount();i++){
-//			controller =  Controllers.getController(i);
-//			System.out.println(controller.getName()+ " : " + controller.getIndex());
-//		}
+		for(int i=0; i<Controllers.getControllerCount();i++){
+			controller =  Controllers.getController(i);
+			System.out.println(controller.getName()+ " : " + controller.getIndex());
+		}
 		
 		controller = Controllers.getController(7);
 
-  
+		
 		
 		SerialPort[] portNames = SerialPort.getCommPorts();
 		for (int i = 0; i < portNames.length; i++)
@@ -143,6 +145,11 @@ public class Main {
 		btnNewButton.setBounds(10, 80, 297, 23);
 		panel.add(btnNewButton);
 		
+		textField = new JTextField();
+		textField.setBounds(10, 114, 583, 20);
+		panel.add(textField);
+		textField.setColumns(10);
+		
 		
 
 	}
@@ -165,11 +172,15 @@ public class Main {
 				sending = true;
 
 				while (sending) {
-					System.out.println("data is: " + data);
-
-					 for (int i=0;i<controller.getAxisCount();i++) {
-							System.out.println(controller.getAxisName(i) +" : "+ controller.getAxisValue(i));
-						}
+//					System.out.println("data is: " + data);
+					 
+					System.out.println("X : "+controller.getXAxisValue());
+					System.out.println("Y : "+controller.getYAxisValue());
+					System.out.println("Z : "+controller.getZAxisValue());
+					
+					textField.setText("X : "+controller.getXAxisValue()+ "   "+"Y : "+controller.getYAxisValue()+"   "+"Z : "+controller.getZAxisValue());
+					
+					controller.poll();
 					
 					if(data != null){
 					output.print(data.toString());
