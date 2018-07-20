@@ -3,5 +3,19 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Tudor/Downloads/jSerialComm-2.0.2.jar"/>
+	<classpathentry kind="lib" path="AppleJavaExtensions.jar"/>
+	<classpathentry kind="lib" path="asm-debug-all.jar"/>
+	<classpathentry kind="lib" path="jinput.jar"/>
+	<classpathentry kind="lib" path="laf-plugin-7.2.1.jar"/>
+	<classpathentry kind="lib" path="laf-widget-7.2.1.jar"/>
+	<classpathentry kind="lib" path="log4j-api-2.0-beta9.jar"/>
+	<classpathentry kind="lib" path="lwjgl_test.jar"/>
+	<classpathentry kind="lib" path="lwjgl_util_applet.jar"/>
+	<classpathentry kind="lib" path="lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="lwjgl-debug.jar"/>
+	<classpathentry kind="lib" path="lwjgl.jar"/>
+	<classpathentry kind="lib" path="lzma.jar"/>
+	<classpathentry kind="lib" path="substance-7.2.1.jar"/>
+	<classpathentry kind="lib" path="trident-7.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -13,9 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.lwjgl.input.Controller;
+import org.lwjgl.input.Controllers;
+
 import com.fazecast.jSerialComm.SerialPort;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 
 public class Main {
 	String s;
@@ -27,6 +28,8 @@ public class Main {
 	Thread thread2 = null;
 	String data;
 	private JButton btnNewButton;
+	static Controller controller;
+	
 
 	/**
 	 * Launch the application.
@@ -66,7 +69,26 @@ public class Main {
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 11, 297, 20);
 		panel.add(comboBox);
+		
+		try {
+			Controllers.create();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Controllers.poll();
+		
+		
+		
+//		for(int i=0; i<Controllers.getControllerCount();i++){
+//			controller =  Controllers.getController(i);
+//			System.out.println(controller.getName()+ " : " + controller.getIndex());
+//		}
+		
+		controller = Controllers.getController(7);
 
+  
+		
 		SerialPort[] portNames = SerialPort.getCommPorts();
 		for (int i = 0; i < portNames.length; i++)
 			comboBox.addItem(portNames[i].getSystemPortName());
@@ -144,6 +166,11 @@ public class Main {
 
 				while (sending) {
 					System.out.println("data is: " + data);
+
+					 for (int i=0;i<controller.getAxisCount();i++) {
+							System.out.println(controller.getAxisName(i) +" : "+ controller.getAxisValue(i));
+						}
+					
 					if(data != null){
 					output.print(data.toString());
 					output.flush();
