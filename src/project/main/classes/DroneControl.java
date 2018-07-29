@@ -205,6 +205,7 @@ public class DroneControl {
 		tglbtnNewToggleButton = new JToggleButton("Start");
 		tglbtnNewToggleButton.setBounds(86, 416, 200, 23);
 		panel.add(tglbtnNewToggleButton);
+		tglbtnNewToggleButton.setEnabled(false);
 
 	}
 
@@ -248,15 +249,20 @@ public class DroneControl {
 
 					String x = String.format("%.2f", controller.getXAxisValue() + 1);
 					String y = String.format("%.2f", controller.getYAxisValue() + 1);
-					String z = String.format("%.2f", controller.getZAxisValue() + 1);
+					String z = String.format("%.2f", -((controller.getZAxisValue() + 1) - 2));
 					String rz = String.format("%.2f", controller.getRZAxisValue() + 1);
 
 					slider_3.setValue(Math.round((controller.getYAxisValue() + 1) * 100));
 					slider_2.setValue(Math.round((controller.getXAxisValue() + 1) * 100));
 					slider_1.setValue(Math.round((controller.getRZAxisValue() + 1) * 100));
-					slider.setValue(Math.round((controller.getZAxisValue() + 1) * 100));
-
-					data = x + " " + y + " " + z;
+					if(-((controller.getZAxisValue() + 1) * 100 - 200) != -0.0){
+					slider.setValue(Math.round(-((controller.getZAxisValue() + 1) * 100 - 200)));
+					}else{
+						slider.setValue(0);
+						z = "0.0";
+					}
+					
+					data = x + " " + y + " " + z + " " + rz;
 					textField.setText("X : " + x + "   " + "Y : " + y + "   " + "Z : " + z + " RZ : " + rz
 							+ " startdrone : " + sd);
 
