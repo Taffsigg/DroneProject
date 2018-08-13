@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
+import javax.swing.JTextPane;
 
 public class DroneControl {
 	String s;
@@ -39,6 +40,8 @@ public class DroneControl {
 	JSlider slider_1 = new JSlider();
 	JSlider slider_2 = new JSlider();
 	JSlider slider_3 = new JSlider();
+	private JTextField textField_1;
+    JTextPane textPane;
 
 	/**
 	 * Launch the application.
@@ -78,6 +81,7 @@ public class DroneControl {
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 11, 297, 20);
 		panel.add(comboBox);
+
 
 		try {
 			Controllers.create();
@@ -126,6 +130,7 @@ public class DroneControl {
 						reciveInputfromSerial(true);
 						sendInputToSerial(true);
 
+
 					} else {
 						JOptionPane.showMessageDialog(null, "No ports aviable!");
 					}
@@ -136,6 +141,7 @@ public class DroneControl {
 					btnConnect.setText("Connect");
 					reciveInputfromSerial(false);
 					sendInputToSerial(false);
+
 				}
 			}
 		});
@@ -158,7 +164,7 @@ public class DroneControl {
 		panel.add(btnNewButton);
 
 		textField = new JTextField();
-		textField.setBounds(10, 114, 583, 20);
+		textField.setBounds(10, 114, 297, 20);
 		panel.add(textField);
 		textField.setColumns(10);
 
@@ -206,6 +212,23 @@ public class DroneControl {
 		tglbtnNewToggleButton.setBounds(86, 416, 200, 23);
 		panel.add(tglbtnNewToggleButton);
 		tglbtnNewToggleButton.setEnabled(false);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(388, 114, 271, 20);
+		panel.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblSend = new JLabel("Send");
+		lblSend.setBounds(332, 117, 46, 14);
+		panel.add(lblSend);
+		
+		JLabel lblRecive = new JLabel("Recive");
+		lblRecive.setBounds(332, 162, 46, 14);
+		panel.add(lblRecive);
+		
+		textPane = new JTextPane();
+		textPane.setBounds(388, 162, 271, 301);
+		panel.add(textPane);
 
 	}
 
@@ -231,25 +254,35 @@ public class DroneControl {
 
 				while (sending) {
 					// System.out.println("data is: " + data);
-
+       
 					if (controller.isButtonPressed(6)) {
 						System.out.println("pressed");
 						if (!startdrone) {
 							startdrone = true;
 							sd = "1";
 							tglbtnNewToggleButton.setSelected(true);
+//							data ="on";
 						} else {
 							startdrone = false;
 							sd = "0";
 							tglbtnNewToggleButton.setSelected(false);
+//							data = "off";
 						}
 
 					}
+                   
 
 					String x = String.format("%.2f", controller.getXAxisValue() + 1);
 					String y = String.format("%.2f", controller.getYAxisValue() + 1);
 					String z = String.format("%.2f", -((controller.getZAxisValue() + 1) - 2));
 					String rz = String.format("%.2f", controller.getRZAxisValue() + 1);
+					
+					int a = Math.round((controller.getXAxisValue() + 1) * 500 + 1000); 
+					int b = Math.round((controller.getYAxisValue() + 1) * 500+ 1000); 
+					int c = Math.round((-((controller.getZAxisValue() + 1) - 2)) * 500+ 1000); 
+					int d = Math.round((controller.getRZAxisValue() + 1) * 500+ 1000); 
+					
+					System.out.println(controller.getYAxisValue());
 
 					slider_3.setValue(Math.round((controller.getYAxisValue() + 1) * 100));
 					slider_2.setValue(Math.round((controller.getXAxisValue() + 1) * 100));
@@ -260,21 +293,25 @@ public class DroneControl {
 						slider.setValue(0);
 						z = "0.0";
 					}
+					
 
-					data = x + " " + y + " " + z + " " + rz;
+					data = a + " " + b + " " + c + " " + d ;
+					
 					textField.setText("X : " + x + "   " + "Y : " + y + "   " + "Z : " + z + "  RZ : " + rz
 							+ " startdrone : " + sd);
+					textField_1.setText(data);
 
 					controller.poll();
-
+              
 					if (data != null) {
-						output.print(data.toString());
+//						System.out.println("data is not null!");
+						output.print(data);
 						output.flush();
 						try {
 							Thread.sleep(100);
 						} catch (Exception e) {
 						}
-						System.out.println("Successfully Sending! " + data);
+//						System.out.println("Successfully Sending! " + data);
 					}
 				}
 			}
@@ -292,7 +329,9 @@ public class DroneControl {
 		thread2 = new Thread() {
 			@Override
 			public void run() {
+
 				Scanner scanner = new Scanner(chosenPort.getInputStream());
+				
 				try {
 					System.out.println(chosenPort.getInputStream().read());
 					System.out.println("recive thread is alive:" + thread2.isAlive());
@@ -302,9 +341,8 @@ public class DroneControl {
 				while (scanner.hasNextLine()) {
 					try {
 						String line = scanner.nextLine();
-						int number = Integer.parseInt(line);
-						System.out.println("number is: " + number);
-						System.out.println("Successfully reciving!");
+					//	System.out.println("number is: " + line);
+						textPane.setText(line);
 					} catch (Exception e) {
 					}
 				}
