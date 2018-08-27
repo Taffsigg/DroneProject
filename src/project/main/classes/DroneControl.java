@@ -471,14 +471,13 @@ public class DroneControl {
 		thread2 = new Thread() {
 			@Override
 			public void run() {
-
-				Scanner scanner = new Scanner(chosenPort.getInputStream());
-				
+				Scanner scanner = null;
 				try {
+				 scanner = new Scanner(chosenPort.getInputStream());
 					System.out.println(chosenPort.getInputStream().read());
 					System.out.println("recive thread is alive:" + thread2.isAlive());
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Arduino malfunctioned! Please close program and reinsert.");
 				}
 				while (scanner.hasNextLine()) {
 					try {
