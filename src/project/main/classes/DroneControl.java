@@ -32,7 +32,6 @@ public class DroneControl {
 	private boolean sending;
 	Thread thread2 = null;
 	String data;
-	private JButton btnNewButton;
 	static Controller controller;
 	private JTextField textField;
 	JToggleButton tglbtnNewToggleButton;
@@ -156,21 +155,6 @@ public class DroneControl {
 		btnConnect.setBounds(10, 42, 89, 23);
 		panel.add(btnConnect);
 
-		btnNewButton = new JButton("LED ON");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (btnNewButton.getText().equals("LED ON")) {
-					data = "on";
-					btnNewButton.setText("LED OFF");
-				} else {
-					data = "off";
-					btnNewButton.setText("LED ON");
-				}
-			}
-		});
-		btnNewButton.setBounds(10, 80, 297, 23);
-		panel.add(btnNewButton);
-
 		textField = new JTextField();
 		textField.setBounds(10, 114, 297, 20);
 		panel.add(textField);
@@ -226,6 +210,7 @@ public class DroneControl {
 		tglbtnNewToggleButton.setEnabled(false);
 		
 		textField_1 = new JTextField();
+		textField_1.setEditable(false);
 		textField_1.setBounds(388, 114, 271, 20);
 		panel.add(textField_1);
 		textField_1.setColumns(10);
@@ -239,6 +224,7 @@ public class DroneControl {
 		panel.add(lblRecive);
 		
 		textPane = new JTextPane();
+		textPane.setEditable(false);
 		textPane.setBounds(388, 162, 271, 301);
 		panel.add(textPane);
 		
