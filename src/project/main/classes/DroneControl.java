@@ -64,6 +64,7 @@ public class DroneControl {
 	 */
 	public DroneControl() {
 		initialize();
+		
 	}
 
 	/**
@@ -81,6 +82,8 @@ public class DroneControl {
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 11, 297, 20);
 		panel.add(comboBox);
+		KeyListener kl = new KeyListener();
+		
 
 
 		try {
@@ -112,6 +115,7 @@ public class DroneControl {
 			comboBox.addItem(portNames[i].getSystemPortName());
 
 		JButton btnConnect = new JButton("Connect");
+		btnConnect.addKeyListener(kl);
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (btnConnect.getText().equals("Connect")) {
