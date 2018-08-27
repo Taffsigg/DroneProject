@@ -42,7 +42,9 @@ public class DroneControl {
 	JSlider slider_3 = new JSlider();
 	private JTextField textField_1;
     JTextPane textPane;
-
+    JButton btnNewButton_1;
+    KeyListener kl;
+    
 	/**
 	 * Launch the application.
 	 */
@@ -82,33 +84,35 @@ public class DroneControl {
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 11, 297, 20);
 		panel.add(comboBox);
-		KeyListener kl = new KeyListener();
+		kl = new KeyListener();
 		
 
 
 		try {
 			Controllers.create();
+			
+			Controllers.poll();
+
+			Controller cont = null;
+
+			for (int i = 0; i < Controllers.getControllerCount(); i++) {
+				controller = Controllers.getController(i);
+				System.out.println(controller.getName() + " : " + controller.getIndex());
+				if (controller.getName().equals("Mad Catz V.1 Stick")) {
+					cont = Controllers.getController(i);
+					for (int i1 = 0; i1 < cont.getButtonCount(); i1++) {
+						System.out.println(cont.getButtonName(i1) + ": " + cont.isButtonPressed(i1));
+
+					}
+				}
+			}
+
+			controller = cont;
+
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		Controllers.poll();
-
-		Controller cont = null;
-
-		for (int i = 0; i < Controllers.getControllerCount(); i++) {
-			controller = Controllers.getController(i);
-			System.out.println(controller.getName() + " : " + controller.getIndex());
-			if (controller.getName().equals("Mad Catz V.1 Stick")) {
-				cont = Controllers.getController(i);
-				for (int i1 = 0; i1 < cont.getButtonCount(); i1++) {
-					System.out.println(cont.getButtonName(i1) + ": " + cont.isButtonPressed(i1));
-
-				}
-			}
-		}
-
-		controller = cont;
 
 		SerialPort[] portNames = SerialPort.getCommPorts();
 		for (int i = 0; i < portNames.length; i++)
@@ -175,24 +179,28 @@ public class DroneControl {
 		JLabel lblController = new JLabel("Controller :");
 		lblController.setBounds(10, 162, 123, 14);
 		panel.add(lblController);
+		slider.setMinimum(1000);
 
-		slider.setValue(100);
-		slider.setMaximum(200);
+		slider.setValue(1500);
+		slider.setMaximum(2000);
 		slider.setBounds(86, 214, 200, 26);
 		panel.add(slider);
+		slider_1.setMinimum(1000);
 
-		slider_1.setValue(100);
-		slider_1.setMaximum(200);
+		slider_1.setValue(1500);
+		slider_1.setMaximum(2000);
 		slider_1.setBounds(86, 262, 200, 26);
 		panel.add(slider_1);
+		slider_2.setMinimum(1000);
 
-		slider_2.setValue(100);
-		slider_2.setMaximum(200);
+		slider_2.setValue(1500);
+		slider_2.setMaximum(2000);
 		slider_2.setBounds(86, 315, 200, 26);
 		panel.add(slider_2);
+		slider_3.setMinimum(1000);
 
-		slider_3.setValue(100);
-		slider_3.setMaximum(200);
+		slider_3.setValue(1500);
+		slider_3.setMaximum(2000);
 		slider_3.setBounds(86, 366, 200, 26);
 		panel.add(slider_3);
 
@@ -233,6 +241,20 @@ public class DroneControl {
 		textPane = new JTextPane();
 		textPane.setBounds(388, 162, 271, 301);
 		panel.add(textPane);
+		
+		btnNewButton_1 = new JButton("Controller");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(btnNewButton_1.getText().equals("Controller")){
+					btnNewButton_1.setText("Keyboard");
+				}else{
+					btnNewButton_1.setText("Controller");
+				}
+			}
+		});
+		btnNewButton_1.setBounds(86, 450, 200, 23);
+		panel.add(btnNewButton_1);
+		btnNewButton_1.addKeyListener(kl);
 
 	}
 
@@ -255,10 +277,19 @@ public class DroneControl {
 
 				boolean startdrone = false;
 				String sd = "0";
+				
+				int a = 1500,b = 1500,c = 1000,d = 1500;
+				
+				int se=15;
+				int de=80;
 
 				while (sending) {
+					
+					
 					// System.out.println("data is: " + data);
-       
+        try{
+        	
+        	if(btnNewButton_1.getText().equals("Controller")) {
 					if (controller.isButtonPressed(6)) {
 						System.out.println("pressed");
 						if (!startdrone) {
@@ -274,39 +305,146 @@ public class DroneControl {
 						}
 
 					}
+					
+					a = Math.round((controller.getXAxisValue() + 1) * 500 + 1000); 
+					b = Math.round((controller.getYAxisValue() + 1) * 500+ 1000); 
+					c = Math.round((-((controller.getZAxisValue() + 1) - 2)) * 500+ 1000); 
+					d = Math.round((controller.getRZAxisValue() + 1) * 500+ 1000); 
+					
+				//System.out.println(controller.getYAxisValue());
+
+					slider_3.setValue(b );
+	                slider_2.setValue(a);
+	                slider_1.setValue(d);
+	                slider.setValue(c);
+	                
+        	}else{
+        		
+        		
+                	 if(kl.w){
+             			if(c < 2000){
+             			    c+=kl.se;
+             			}else{
+             				c = 2000;
+             			}
+             			System.out.println(c);
+             		}else{
+             			if(!kl.s) {
+             			if(c > 1000){
+             			    c-=kl.de;
+             			}else{
+             				c = 1000;
+             			}
+             			}
+             			System.out.println(c);
+             		}
+             		 if(kl.s){
+                      	if(c > 1000){
+              			    c-=de;
+              			}else{
+              				c = 1000;
+              			}
+              		}else{
+              			if(!kl.w) {
+              			if(c < 1500){
+              			    c+=de;
+              			}else{
+              				c = 1500;
+              			}
+              			}
+              		}
+                 
+        		
+                if(kl.a){
+                	if(d > 1000){
+        			    d-=se;
+        			}else{
+        				d = 1000;
+        			}
+        		}else{
+        			if(!kl.d) {		
+        				d = 1500;
+        			}
+        		}
+                if(kl.d){
+                	if(d < 2000){
+        			    d+=se;
+        			}else{
+        				d = 2000;
+        			}
+        		}else{
+        			if(!kl.a) {
+        		
+        				d = 1500;
+        			
+        			}
+        		}
+                if(kl.up){
+                	if(b > 1000){
+        			    b-=se;
+        			}else{
+        				b = 1000;
+        			}
+        		}else{
+        			if(!kl.down) {
+        				b = 1500;
+        			}
+        			
+        		}
+                if(kl.down){
+                	if(b < 2000){
+        			    b+=se;
+        			}else{
+        				b = 2000;
+        			}
+        		}else{
+        				if(!kl.up){
+        					b = 1500;
+            			}
+        		}
+                if(kl.left){
+                	if(a > 1000){
+        			    a-=se;
+        			}else{
+        				a = 1000;
+        			}
+        		}else{
+        			if(!kl.right){
+        		        a=1500;
+        			}
+        		}
+                if(kl.right){
+                	if(a < 2000){
+        			    a+=se;
+        			}else{
+        				a = 2000;
+        			}
+        		}else{
+        			if(!kl.left){
+        		        a=1500;
+        			}
+        		}
+                slider_3.setValue(b );
+                slider_2.setValue(a);
+                slider_1.setValue(d);
+                slider.setValue(c);
+        	}
+					
+        }catch(Exception e){
+        	
+        }
                    
 
-					String x = String.format("%.2f", controller.getXAxisValue() + 1);
-					String y = String.format("%.2f", controller.getYAxisValue() + 1);
-					String z = String.format("%.2f", -((controller.getZAxisValue() + 1) - 2));
-					String rz = String.format("%.2f", controller.getRZAxisValue() + 1);
-					
-					int a = Math.round((controller.getXAxisValue() + 1) * 500 + 1000); 
-					int b = Math.round((controller.getYAxisValue() + 1) * 500+ 1000); 
-					int c = Math.round((-((controller.getZAxisValue() + 1) - 2)) * 500+ 1000); 
-					int d = Math.round((controller.getRZAxisValue() + 1) * 500+ 1000); 
-					
-					System.out.println(controller.getYAxisValue());
-
-					slider_3.setValue(Math.round((controller.getYAxisValue() + 1) * 100));
-					slider_2.setValue(Math.round((controller.getXAxisValue() + 1) * 100));
-					slider_1.setValue(Math.round((controller.getRZAxisValue() + 1) * 100));
-					if (-((controller.getZAxisValue() + 1) * 100 - 200) != -0.0) {
-						slider.setValue(Math.round(-((controller.getZAxisValue() + 1) * 100 - 200)));
-					} else {
-						slider.setValue(0);
-						z = "0.0";
-					}
-					
 
 					data = a + " " + b + " " + c + " " + d ;
 					
-					textField.setText("X : " + x + "   " + "Y : " + y + "   " + "Z : " + z + "  RZ : " + rz
+					textField.setText("X : " + a + "   " + "Y : " + b + "   " + "Z : " + c + "  RZ : " + d
 							+ " startdrone : " + sd);
 					textField_1.setText(data);
-
+					
+                   if(btnNewButton_1.getText().equals("Controller")) {
 					controller.poll();
-              
+                   }
 					if (data != null) {
 //						System.out.println("data is not null!");
 						output.print(data);
