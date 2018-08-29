@@ -43,6 +43,7 @@ public class DroneControl {
     JTextPane textPane;
     JButton btnNewButton_1;
     KeyListener kl;
+    JLabel label;
     
 	/**
 	 * Launch the application.
@@ -80,10 +81,16 @@ public class DroneControl {
 		frame.setResizable(false);
 		panel.setLayout(null);
 		frame.setContentPane(panel);
+
+		label = new JLabel("");
+		label.setBounds(0, 0, 1274, 691);
+		panel.add(label);
+		label.addKeyListener(kl);
 		comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 11, 297, 20);
 		panel.add(comboBox);
 		kl = new KeyListener();
+		panel.addKeyListener(kl);
 		
 
 
@@ -159,35 +166,39 @@ public class DroneControl {
 		textField.setBounds(10, 114, 297, 20);
 		panel.add(textField);
 		textField.setColumns(10);
+		textField.addKeyListener(kl);
 
 		JLabel lblController = new JLabel("Controller :");
 		lblController.setBounds(10, 162, 123, 14);
 		panel.add(lblController);
 		slider.setMinimum(1000);
+		slider.addKeyListener(kl);
 
 		slider.setValue(1500);
 		slider.setMaximum(2000);
 		slider.setBounds(86, 214, 200, 26);
 		panel.add(slider);
 		slider_1.setMinimum(1000);
+		slider_1.addKeyListener(kl);
 
 		slider_1.setValue(1500);
 		slider_1.setMaximum(2000);
 		slider_1.setBounds(86, 262, 200, 26);
 		panel.add(slider_1);
 		slider_2.setMinimum(1000);
+		slider_2.addKeyListener(kl);
 
 		slider_2.setValue(1500);
 		slider_2.setMaximum(2000);
 		slider_2.setBounds(86, 315, 200, 26);
 		panel.add(slider_2);
 		slider_3.setMinimum(1000);
-
+		
 		slider_3.setValue(1500);
 		slider_3.setMaximum(2000);
 		slider_3.setBounds(86, 366, 200, 26);
 		panel.add(slider_3);
-
+		slider_3.addKeyListener(kl);
 		JLabel lblThrottle = new JLabel("Throttle: ");
 		lblThrottle.setBounds(10, 214, 66, 14);
 		panel.add(lblThrottle);
@@ -208,6 +219,7 @@ public class DroneControl {
 		tglbtnNewToggleButton.setBounds(86, 416, 200, 23);
 		panel.add(tglbtnNewToggleButton);
 		tglbtnNewToggleButton.setEnabled(false);
+		tglbtnNewToggleButton.addKeyListener(kl);
 		
 		textField_1 = new JTextField();
 		textField_1.setEditable(false);
@@ -226,6 +238,7 @@ public class DroneControl {
 		textPane = new JTextPane();
 		textPane.setEditable(false);
 		textPane.setBounds(388, 162, 271, 301);
+		textPane.addKeyListener(kl);
 		panel.add(textPane);
 		
 		btnNewButton_1 = new JButton("Controller");
@@ -298,11 +311,18 @@ public class DroneControl {
 					d = Math.round((controller.getRZAxisValue() + 1) * 500+ 1000); 
 					
 				//System.out.println(controller.getYAxisValue());
+					
+					if(kl.es){
+	                	c=1000;
+	                	d=1000;
+	                }
+					
 
 					slider_3.setValue(b );
 	                slider_2.setValue(a);
 	                slider_1.setValue(d);
 	                slider.setValue(c);
+	                
 	                
         	}else{
         		
@@ -410,6 +430,14 @@ public class DroneControl {
         		        a=1500;
         			}
         		}
+                if(kl.es){
+                	c=1000;
+                	d=1000;
+                }
+                if(kl.start){
+					c=1000;
+                	d=2000;
+				}
                 slider_3.setValue(b );
                 slider_2.setValue(a);
                 slider_1.setValue(d);

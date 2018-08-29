@@ -4,10 +4,11 @@ import java.awt.event.KeyEvent;
 
 public class KeyListener implements java.awt.event.KeyListener{
 	
-	boolean w = false, up = false, s = false, down = false, a = false, left = false, d = false, right = false;
+	boolean w = false, up = false, s = false, down = false, a = false, left = false, d = false, right = false, es = false, start = false;
 	int se = 20, de = 80;
 
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == e.VK_D){
@@ -31,6 +32,17 @@ public class KeyListener implements java.awt.event.KeyListener{
 			se = 50;
 			System.out.println(se);
 		}
+		if(e.getKeyCode() == e.VK_SPACE){
+			if(!e.isShiftDown()){
+			es = true;
+			start = false;
+			System.out.println("start = false");
+			System.out.println(es);
+			}else{
+				start = true;
+				System.out.println("start = true");
+			}
+			}
 	}
 
 	@Override
@@ -55,7 +67,15 @@ public class KeyListener implements java.awt.event.KeyListener{
 			System.out.println(s);
 		}else if(!e.isShiftDown()){
 			se = 20;
-			System.out.println(se);
+			//System.out.println(se);
+		}
+		if(e.getKeyCode() == e.VK_SPACE){
+			es = false;
+			System.out.println(es);
+			if(!e.isShiftDown() || e.isShiftDown()){
+				start = false;
+				System.out.println("start = false");
+				}
 		}
 	}
 
