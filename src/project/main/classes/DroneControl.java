@@ -277,33 +277,46 @@ public class DroneControl {
 				boolean startdrone = false;
 				String sd = "0";
 				
-				int a = 1500,b = 1500,c = 1000,d = 1500;
+				int a = 1500,b = 1500,c = 1000,d = 1500,e=1500,f=1500,g=1500;
+				boolean s1 = false,s2= false,s3=false;;
 				
 				int se=15;
 				int de=80;
 
 				while (sending) {
 					
+
+					
 					
 					// System.out.println("data is: " + data);
         try{
         	
         	if(btnNewButton_1.getText().equals("Controller")) {
-					if (controller.isButtonPressed(6)) {
-						System.out.println("pressed");
-						if (!startdrone) {
-							startdrone = true;
-							sd = "1";
-							tglbtnNewToggleButton.setSelected(true);
-//							data ="on";
-						} else {
-							startdrone = false;
-							sd = "0";
-							tglbtnNewToggleButton.setSelected(false);
-//							data = "off";
-						}
+					if(controller.isButtonPressed(1)){
 
+						if(!s1){
+							s1 = true;
+						
+						}else{
+							s1=false;
+							
+						}
+						
+					}else if(controller.isButtonPressed(4)){
+						if(!s2){
+							s2 = true;
+						}else{
+							s2=false;
+						}
+					}else if(controller.isButtonPressed(5)){
+						if(!s3){
+							s3 = true;
+						}else{
+							s3=false;
+						}
 					}
+					
+					
 					
 					a = Math.round((controller.getXAxisValue() + 1) * 500 + 1000); 
 					b = Math.round((controller.getYAxisValue() + 1) * 500+ 1000); 
@@ -322,7 +335,21 @@ public class DroneControl {
 	                slider_2.setValue(a);
 	                slider_1.setValue(d);
 	                slider.setValue(c);
-	                
+	                if(s1){
+	                	g=2000;
+	                }else{
+	                	g=1000;;
+	                }
+	                if(s2){
+	                	e = 2000;
+	                }else{
+	                	e = 1000;
+	                }
+	                if(s3){
+	                	f = 2000;
+	                }else{
+	                	f = 1000;
+	                }
 	                
         	}else{
         		
@@ -333,7 +360,7 @@ public class DroneControl {
              			}else{
              				c = 2000;
              			}
-             			System.out.println(c);
+             			//System.out.println(c);
              		}else{
              			if(!kl.s) {
              			if(c > 1000){
@@ -342,7 +369,7 @@ public class DroneControl {
              				c = 1000;
              			}
              			}
-             			System.out.println(c);
+             			//System.out.println(c);
              		}
              		 if(kl.s){
                       	if(c > 1000){
@@ -430,27 +457,38 @@ public class DroneControl {
         		        a=1500;
         			}
         		}
-                if(kl.es){
-                	c=1000;
-                	d=1000;
-                }
-                if(kl.start){
-					c=1000;
-                	d=2000;
-				}
+                
                 slider_3.setValue(b );
                 slider_2.setValue(a);
                 slider_1.setValue(d);
                 slider.setValue(c);
+                
+                if(kl.start){
+                	g=2000;
+                }else{
+                	g=1000;
+                }
+                if(kl.sw1){
+                	e = 2000;
+                }else{
+                	e=1000;
+                }
+                if(kl.sw2){
+                	f = 2000;
+                }else{
+                	f=1000;
+                }
+                
+                
         	}
 					
-        }catch(Exception e){
+        }catch(Exception ex){
         	
         }
                    
 
 
-					data = a + " " + b + " " + c + " " + d ;
+					data = a + " " + b + " " + c + " " + d + " " + e + " " + f + " " + g;
 					
 					textField.setText("X : " + a + "   " + "Y : " + b + "   " + "Z : " + c + "  RZ : " + d
 							+ " startdrone : " + sd);
@@ -465,7 +503,7 @@ public class DroneControl {
 						output.flush();
 						try {
 							Thread.sleep(100);
-						} catch (Exception e) {
+						} catch (Exception ex) {
 						}
 //						System.out.println("Successfully Sending! " + data);
 					}
