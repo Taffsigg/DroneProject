@@ -1,0 +1,17 @@
+{
+    "name": "tudor/test_plugin",
+    "description": "test plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Me",
+            "email": "tudor_cg@yahoo.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}, 
+    "autoload": {
+        "psr-4": {"Inc\\": "./inc"}
+    }
+}
